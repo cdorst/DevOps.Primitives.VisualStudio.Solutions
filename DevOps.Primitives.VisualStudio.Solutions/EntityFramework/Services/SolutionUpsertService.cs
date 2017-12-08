@@ -1,14 +1,12 @@
 ﻿using Common.EntityFrameworkServices;
 using DevOps.Primitives.Strings;
-using DevOps.Primitives.VisualStudio.Solutions;
-using DevOps.Primitives.VisualStudio.Solutions.EntityFramework;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace DevOps.Primitives.VisualStudio.Projects.EntityFramework.Services
+namespace DevOps.Primitives.VisualStudio.Solutions.EntityFramework.Services
 {
     public class SolutionUpsertService<TDbContext> : UpsertService<TDbContext, Solution>
         where TDbContext : VisualStudioSolutionsDbContext

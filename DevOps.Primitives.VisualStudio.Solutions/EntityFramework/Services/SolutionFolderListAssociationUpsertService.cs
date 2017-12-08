@@ -1,12 +1,10 @@
 ﻿using Common.EntityFrameworkServices;
-using DevOps.Primitives.VisualStudio.Solutions;
-using DevOps.Primitives.VisualStudio.Solutions.EntityFramework;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace DevOps.Primitives.VisualStudio.Projects.EntityFramework.Services
+namespace DevOps.Primitives.VisualStudio.Solutions.EntityFramework.Services
 {
     public class SolutionFolderListAssociationUpsertService<TDbContext> : UpsertService<TDbContext, SolutionFolderListAssociation>
         where TDbContext : VisualStudioSolutionsDbContext
