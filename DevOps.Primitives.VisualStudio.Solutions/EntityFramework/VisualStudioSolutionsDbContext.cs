@@ -11,6 +11,8 @@ namespace DevOps.Primitives.VisualStudio.Solutions.EntityFramework
 
         public DbSet<Solution> Solutions { get; set; }
         public DbSet<SolutionFolder> SolutionFolders { get; set; }
+        public DbSet<SolutionFolderList> SolutionFolderLists { get; set; }
+        public DbSet<SolutionFolderListAssociation> SolutionFolderListAssociations { get; set; }
         public DbSet<SolutionProject> SolutionProjects { get; set; }
         public DbSet<SolutionProjectList> SolutionProjectLists { get; set; }
         public DbSet<SolutionProjectListAssociation> SolutionProjectListAssociations { get; set; }
