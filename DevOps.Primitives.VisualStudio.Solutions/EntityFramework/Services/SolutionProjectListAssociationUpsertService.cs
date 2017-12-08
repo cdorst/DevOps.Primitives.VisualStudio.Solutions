@@ -6,24 +6,24 @@ using System.Linq.Expressions;
 
 namespace DevOps.Primitives.VisualStudio.Solutions.EntityFramework.Services
 {
-    public class SolutionProjectListAssociationUpsertService<TDbContext> : UpsertService<TDbContext, SolutionFolderListAssociation>
+    public class SolutionProjectListAssociationUpsertService<TDbContext> : UpsertService<TDbContext, SolutionProjectListAssociation>
         where TDbContext : VisualStudioSolutionsDbContext
     {
-        public SolutionProjectListAssociationUpsertService(ICacheService<SolutionFolderListAssociation> cache, TDbContext database, ILogger<UpsertService<TDbContext, SolutionFolderListAssociation>> logger)
-            : base(cache, database, logger, database.SolutionFolderListAssociations)
+        public SolutionProjectListAssociationUpsertService(ICacheService<SolutionProjectListAssociation> cache, TDbContext database, ILogger<UpsertService<TDbContext, SolutionProjectListAssociation>> logger)
+            : base(cache, database, logger, database.SolutionProjectListAssociations)
         {
-            CacheKey = record => $"{nameof(VisualStudio)}.{nameof(SolutionFolderListAssociation)}={record.SolutionFolderId}:{record.SolutionFolderListId}";
+            CacheKey = record => $"{nameof(VisualStudio)}.{nameof(SolutionProjectListAssociation)}={record.SolutionProjectId}:{record.SolutionProjectListId}";
         }
 
-        protected override IEnumerable<object> EnumerateReferences(SolutionFolderListAssociation record)
+        protected override IEnumerable<object> EnumerateReferences(SolutionProjectListAssociation record)
         {
-            yield return record.SolutionFolder;
-            yield return record.SolutionFolderList;
+            yield return record.SolutionProject;
+            yield return record.SolutionProjectList;
         }
 
-        protected override Expression<Func<SolutionFolderListAssociation, bool>> FindExisting(SolutionFolderListAssociation record)
+        protected override Expression<Func<SolutionProjectListAssociation, bool>> FindExisting(SolutionProjectListAssociation record)
             => existing
-                => existing.SolutionFolderId == record.SolutionFolderId
-                && existing.SolutionFolderListId == record.SolutionFolderListId;
+                => existing.SolutionProjectId == record.SolutionProjectId
+                && existing.SolutionProjectListId == record.SolutionProjectListId;
     }
 }
