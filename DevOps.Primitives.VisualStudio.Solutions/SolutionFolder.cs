@@ -1,15 +1,17 @@
-﻿using DevOps.Primitives.Strings;
+﻿using Common.EntityFrameworkServices;
+using DevOps.Primitives.Strings;
 using ProtoBuf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace DevOps.Primitives.VisualStudio.Solutions
 {
     [ProtoContract]
     [Table("SolutionFolders", Schema = nameof(VisualStudio))]
-    public class SolutionFolder
+    public class SolutionFolder : IUniqueListRecord
     {
         [Key]
         [ProtoMember(1)]
@@ -24,12 +26,12 @@ namespace DevOps.Primitives.VisualStudio.Solutions
         public int NameId { get; set; }
 
         [ProtoMember(5)]
-        public Solution Solution { get; set; }
+        public SolutionProjectList SolutionProjectList { get; set; }
         [ProtoMember(6)]
-        public int SolutionId { get; set; }
+        public int? SolutionProjectListId { get; set; }
 
-        [ProtoMember(7)]
-        public List<SolutionProject> Projects { get; set; }
+        public IEnumerable<SolutionProject> GetProjects()
+            => SolutionProjectList?.GetAssociations().Select(each => each.GetRecord());
 
         public string GetSlnProjectDeclaration()
             => SlnDeclarations.GetProjectDeclaration(SlnGuidTypes.Folder,

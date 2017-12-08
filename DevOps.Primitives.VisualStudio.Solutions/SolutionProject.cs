@@ -1,4 +1,5 @@
-﻿using DevOps.Primitives.Strings;
+﻿using Common.EntityFrameworkServices;
+using DevOps.Primitives.Strings;
 using ProtoBuf;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +10,7 @@ namespace DevOps.Primitives.VisualStudio.Solutions
 {
     [ProtoContract]
     [Table("SolutionProjects", Schema = nameof(VisualStudio))]
-    public class SolutionProject
+    public class SolutionProject : IUniqueListRecord
     {
         [Key]
         [ProtoMember(1)]
