@@ -12,6 +12,18 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     [Table("SolutionProjects", Schema = nameof(VisualStudio))]
     public class SolutionProject : IUniqueListRecord
     {
+        public SolutionProject() { }
+        public SolutionProject(Guid guid, AsciiStringReference name, AsciiStringReference pathRelativeToSolution)
+        {
+            Guid = guid;
+            Name = name;
+            PathRelativeToSolution = pathRelativeToSolution;
+        }
+        public SolutionProject(Guid guid, string name, string pathRelativeToSolution)
+            : this(guid, new AsciiStringReference(name), new AsciiStringReference(pathRelativeToSolution))
+        {
+        }
+
         [Key]
         [ProtoMember(1)]
         public int SolutionProjectId { get; set; }

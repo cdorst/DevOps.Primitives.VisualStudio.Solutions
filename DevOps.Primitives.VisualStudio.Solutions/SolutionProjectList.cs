@@ -2,6 +2,7 @@
 using Common.EntityFrameworkServices.Factories;
 using DevOps.Primitives.Strings;
 using ProtoBuf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,6 +13,29 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     [Table("SolutionProjectLists", Schema = nameof(VisualStudio))]
     public class SolutionProjectList : IUniqueList<SolutionProject, SolutionProjectListAssociation>
     {
+        public SolutionProjectList() { }
+        public SolutionProjectList(List<SolutionProjectListAssociation> associations, AsciiStringReference listIdentifier = null)
+        {
+            SolutionProjectListAssociations = associations;
+            ListIdentifier = listIdentifier;
+        }
+        public SolutionProjectList(SolutionProjectListAssociation associations, AsciiStringReference listIdentifier = null)
+            : this(new List<SolutionProjectListAssociation> { associations }, listIdentifier)
+        {
+        }
+        public SolutionProjectList(SolutionProject solutionProject, AsciiStringReference listIdentifier = null)
+            : this(new SolutionProjectListAssociation(solutionProject), listIdentifier)
+        {
+        }
+        public SolutionProjectList(Guid guid, AsciiStringReference name, AsciiStringReference pathRelativeToSolution, AsciiStringReference listIdentifier = null)
+            : this(new SolutionProject(guid, name, pathRelativeToSolution), listIdentifier)
+        {
+        }
+        public SolutionProjectList(Guid guid, string name, string pathRelativeToSolution, AsciiStringReference listIdentifier = null)
+            : this(new SolutionProject(guid, name, pathRelativeToSolution), listIdentifier)
+        {
+        }
+
         [Key]
         [ProtoMember(1)]
         public int SolutionProjectListId { get; set; }

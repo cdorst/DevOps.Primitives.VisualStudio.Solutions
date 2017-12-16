@@ -13,6 +13,19 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     [Table("Solutions", Schema = nameof(VisualStudio))]
     public class Solution
     {
+        public Solution() { }
+        public Solution(Guid guid, AsciiStringReference name, AsciiMaxStringReference versionBlock, SolutionFolderList solutionFolderList = null)
+        {
+            Guid = guid;
+            Name = name;
+            VersionBlock = versionBlock;
+            SolutionFolderList = solutionFolderList;
+        }
+        public Solution(Guid guid, string name, string versionBlock, SolutionFolderList solutionFolderList = null)
+            : this(guid, new AsciiStringReference(name), new AsciiMaxStringReference(versionBlock), solutionFolderList)
+        {
+        }
+
         [Key]
         [ProtoMember(1)]
         public int SolutionId { get; set; }
@@ -26,17 +39,18 @@ namespace DevOps.Primitives.VisualStudio.Solutions
         public int NameId { get; set; }
 
         [ProtoMember(5)]
-        public SolutionFolderList SolutionFolderList { get; set; }
+        public AsciiMaxStringReference VersionBlock { get; set; }
         [ProtoMember(6)]
+        public int VersionBlockId { get; set; }
+
+        [ProtoMember(7)]
+        public SolutionFolderList SolutionFolderList { get; set; }
+        [ProtoMember(8)]
         public int? SolutionFolderListId { get; set; }
 
         public StringBuilder GetSolutionBuilder()
         {
-            var builder = new StringBuilder()
-                .AppendLine("Microsoft Visual Studio Solution File, Format Version 12.00")
-                .AppendLine("# Visual Studio 15")
-                .AppendLine("VisualStudioVersion = 15.0.27004.2010")
-                .AppendLine("MinimumVisualStudioVersion = 10.0.40219.1");
+            var builder = new StringBuilder().AppendLine(VersionBlock.Value);
             var folders = new List<SolutionFolder>();
             var projects = new List<SolutionProject>();
             if (SolutionFolderList != null)
@@ -69,7 +83,7 @@ namespace DevOps.Primitives.VisualStudio.Solutions
             return builder
                 .AppendLine("\tEndGlobalSection")
                 .AppendLine("\tGlobalSection(ExtensibilityGlobals) = preSolution")
-                .AppendLine(GetSolutionGuidLine())
+                .AppendLine(GetSolutionGuidLine(Guid))
                 .AppendLine("\tEndGlobalSection")
                 .AppendLine("EndGlobal")
                 .AppendLine();
@@ -80,7 +94,7 @@ namespace DevOps.Primitives.VisualStudio.Solutions
                 folder.Guid,
                 project.Guid);
 
-        private string GetSolutionGuidLine()
-            => SlnDeclarations.GetSolutionGuidLine(Guid);
+        private static string GetSolutionGuidLine(Guid guid)
+            => SlnDeclarations.GetSolutionGuidLine(guid);
     }
 }

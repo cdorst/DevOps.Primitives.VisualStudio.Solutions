@@ -1,5 +1,7 @@
 ﻿using Common.EntityFrameworkServices;
+using DevOps.Primitives.Strings;
 using ProtoBuf;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,6 +11,21 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     [Table("SolutionFolderListAssociations", Schema = nameof(VisualStudio))]
     public class SolutionFolderListAssociation : IUniqueListAssociation<SolutionFolder>
     {
+        public SolutionFolderListAssociation() { }
+        public SolutionFolderListAssociation(SolutionFolder solutionFolder, SolutionFolderList solutionFolderList = null)
+        {
+            SolutionFolder = solutionFolder;
+            SolutionFolderList = solutionFolderList;
+        }
+        public SolutionFolderListAssociation(Guid guid, AsciiStringReference name, SolutionProjectList projectList = null, SolutionFolderList solutionFolderList = null)
+            : this(new SolutionFolder(guid, name, projectList), solutionFolderList)
+        {
+        }
+        public SolutionFolderListAssociation(Guid guid, string name, SolutionProjectList projectList = null, SolutionFolderList solutionFolderList = null)
+            : this(new SolutionFolder(guid, name, projectList), solutionFolderList)
+        {
+        }
+
         [Key]
         [ProtoMember(1)]
         public int SolutionFolderListAssociationId { get; set; }

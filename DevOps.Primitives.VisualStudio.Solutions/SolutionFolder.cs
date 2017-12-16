@@ -13,6 +13,18 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     [Table("SolutionFolders", Schema = nameof(VisualStudio))]
     public class SolutionFolder : IUniqueListRecord
     {
+        public SolutionFolder() { }
+        public SolutionFolder(Guid guid, AsciiStringReference name, SolutionProjectList projectList = null)
+        {
+            Guid = guid;
+            Name = name;
+            SolutionProjectList = projectList;
+        }
+        public SolutionFolder(Guid guid, string name, SolutionProjectList projectList = null)
+            : this(guid, new AsciiStringReference(name), projectList)
+        {
+        }
+
         [Key]
         [ProtoMember(1)]
         public int SolutionFolderId { get; set; }
