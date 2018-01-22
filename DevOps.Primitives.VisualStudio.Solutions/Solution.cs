@@ -89,6 +89,9 @@ namespace DevOps.Primitives.VisualStudio.Solutions
                 .AppendLine();
         }
 
+        public override string ToString()
+            => GetSolutionBuilder().ToString();
+
         private static string GetNestingAssignment(SolutionFolder folder, SolutionProject project)
             => SlnDeclarations.GetNestedProjectAssignment(
                 folder.Guid,
