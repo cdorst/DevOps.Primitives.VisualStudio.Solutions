@@ -25,6 +25,17 @@ namespace DevOps.Primitives.VisualStudio.Solutions
             : this(guid, new AsciiStringReference(name), new AsciiMaxStringReference(versionBlock), solutionFolderList)
         {
         }
+        public Solution(Guid guid, AsciiStringReference name, AsciiMaxStringReference versionBlock, SolutionProject solutionProject = null)
+        {
+            Guid = guid;
+            Name = name;
+            VersionBlock = versionBlock;
+            SolutionProject = solutionProject;
+        }
+        public Solution(Guid guid, string name, string versionBlock, SolutionProject solutionProject = null)
+            : this(guid, new AsciiStringReference(name), new AsciiMaxStringReference(versionBlock), solutionProject)
+        {
+        }
 
         [Key]
         [ProtoMember(1)]
@@ -48,6 +59,11 @@ namespace DevOps.Primitives.VisualStudio.Solutions
         [ProtoMember(8)]
         public int? SolutionFolderListId { get; set; }
 
+        [ProtoMember(9)]
+        public SolutionProject SolutionProject { get; set; }
+        [ProtoMember(10)]
+        public int? SolutionProjectId { get; set; }
+
         public StringBuilder GetSolutionBuilder()
         {
             var builder = new StringBuilder().AppendLine(VersionBlock.Value);
@@ -59,9 +75,10 @@ namespace DevOps.Primitives.VisualStudio.Solutions
                 foreach (var folder in folders)
                     builder.AppendLine(folder.GetSlnProjectDeclaration());
                 projects.AddRange(folders.SelectMany(f => f.GetProjects()));
-                foreach (var project in projects)
-                    builder.AppendLine(project.GetSlnProjectDeclaration());
             }
+            if (SolutionProject != null) projects.Add(SolutionProject);
+            foreach (var project in projects)
+                builder.AppendLine(project.GetSlnProjectDeclaration());
             builder
                 .AppendLine("Global")
                 .AppendLine("\tGlobalSection(SolutionConfigurationPlatforms) = preSolution")
@@ -75,13 +92,16 @@ namespace DevOps.Primitives.VisualStudio.Solutions
                 .AppendLine("\tEndGlobalSection")
                 .AppendLine("\tGlobalSection(SolutionProperties) = preSolution")
                 .AppendLine("\t\tHideSolutionNode = FALSE")
-                .AppendLine("\tEndGlobalSection")
-                .AppendLine("\tGlobalSection(NestedProjects) = preSolution");
-            foreach (var folder in folders)
-                foreach (var project in folder.GetProjects() ?? new SolutionProject[] { })
-                    builder.AppendLine(GetNestingAssignment(folder, project));
+                .AppendLine("\tEndGlobalSection");
+            if (folders.Any())
+            {
+                builder.AppendLine("\tGlobalSection(NestedProjects) = preSolution");
+                foreach (var folder in folders)
+                    foreach (var project in folder.GetProjects() ?? new SolutionProject[] { })
+                        builder.AppendLine(GetNestingAssignment(folder, project));
+                builder.AppendLine("\tEndGlobalSection");
+            }
             return builder
-                .AppendLine("\tEndGlobalSection")
                 .AppendLine("\tGlobalSection(ExtensibilityGlobals) = preSolution")
                 .AppendLine(GetSolutionGuidLine(Guid))
                 .AppendLine("\tEndGlobalSection")
