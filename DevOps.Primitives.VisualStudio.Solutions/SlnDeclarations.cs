@@ -9,7 +9,7 @@ namespace DevOps.Primitives.VisualStudio.Solutions
             => $"Project(\"{Brace(projectType)}\") = \"{name}\", \"{path}\", \"{Brace(guid)}\"{Environment.NewLine}EndProject";
 
         public static string GetGlobalProjectConfigurationPlatforms(Guid guid)
-            => new StringBuilder($"{GlobalSectionItem(guid)}.Debug|Any CPU.ActiveCfg = Debug|Any CPU")
+            => new StringBuilder().Append($"{GlobalSectionItem(guid)}.Debug|Any CPU.ActiveCfg = Debug|Any CPU")
                 .AppendLine($"{GlobalSectionItem(guid)}.Debug|Any CPU.Build.0 = Debug|Any CPU")
                 .AppendLine($"{GlobalSectionItem(guid)}.Release|Any CPU.ActiveCfg = Release|Any CPU")
                 .AppendLine($"{GlobalSectionItem(guid)}.Release|Any CPU.Build.0 = Release|Any CPU")
