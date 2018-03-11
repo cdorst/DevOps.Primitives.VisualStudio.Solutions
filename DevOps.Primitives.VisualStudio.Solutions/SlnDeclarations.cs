@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace DevOps.Primitives.VisualStudio.Solutions
 {
@@ -9,11 +8,10 @@ namespace DevOps.Primitives.VisualStudio.Solutions
             => $"Project(\"{Brace(projectType)}\") = \"{name}\", \"{path}\", \"{Brace(guid)}\"{Environment.NewLine}EndProject";
 
         public static string GetGlobalProjectConfigurationPlatforms(Guid guid)
-            => new StringBuilder().Append($"{GlobalSectionItem(guid)}.Debug|Any CPU.ActiveCfg = Debug|Any CPU")
-                .AppendLine($"{GlobalSectionItem(guid)}.Debug|Any CPU.Build.0 = Debug|Any CPU")
-                .AppendLine($"{GlobalSectionItem(guid)}.Release|Any CPU.ActiveCfg = Release|Any CPU")
-                .AppendLine($"{GlobalSectionItem(guid)}.Release|Any CPU.Build.0 = Release|Any CPU")
-                .ToString();
+            => $@"{GlobalSectionItem(guid)}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+{GlobalSectionItem(guid)}.Debug|Any CPU.Build.0 = Debug|Any CPU
+{GlobalSectionItem(guid)}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{GlobalSectionItem(guid)}.Release|Any CPU.Build.0 = Release|Any CPU";
 
         public static string GetNestedProjectAssignment(Guid folder, Guid project)
             => $"{Brace(project)} = {Brace(folder)}";
