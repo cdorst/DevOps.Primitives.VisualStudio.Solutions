@@ -12,17 +12,17 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     public class SolutionFolderListAssociation : IUniqueListAssociation<SolutionFolder>
     {
         public SolutionFolderListAssociation() { }
-        public SolutionFolderListAssociation(SolutionFolder solutionFolder, SolutionFolderList solutionFolderList = null)
+        public SolutionFolderListAssociation(in SolutionFolder solutionFolder, in SolutionFolderList solutionFolderList = default)
         {
             SolutionFolder = solutionFolder;
             SolutionFolderList = solutionFolderList;
         }
-        public SolutionFolderListAssociation(Guid guid, AsciiStringReference name, SolutionProjectList projectList = null, SolutionFolderList solutionFolderList = null)
-            : this(new SolutionFolder(guid, name, projectList), solutionFolderList)
+        public SolutionFolderListAssociation(in Guid guid, in AsciiStringReference name, in SolutionProjectList projectList = default, in SolutionFolderList solutionFolderList = default)
+            : this(new SolutionFolder(in guid, in name, in projectList), in solutionFolderList)
         {
         }
-        public SolutionFolderListAssociation(Guid guid, string name, SolutionProjectList projectList = null, SolutionFolderList solutionFolderList = null)
-            : this(new SolutionFolder(guid, name, projectList), solutionFolderList)
+        public SolutionFolderListAssociation(in Guid guid, in string name, in SolutionProjectList projectList = default, in SolutionFolderList solutionFolderList = default)
+            : this(new SolutionFolder(in guid, in name, in projectList), in solutionFolderList)
         {
         }
 
@@ -42,10 +42,10 @@ namespace DevOps.Primitives.VisualStudio.Solutions
 
         public SolutionFolder GetRecord() => SolutionFolder;
 
-        public void SetRecord(SolutionFolder record)
+        public void SetRecord(in SolutionFolder record)
         {
             SolutionFolder = record;
-            SolutionFolderId = SolutionFolder.SolutionFolderId;
+            SolutionFolderId = record.SolutionFolderId;
         }
     }
 }

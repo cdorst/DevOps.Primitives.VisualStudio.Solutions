@@ -14,25 +14,25 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     public class SolutionFolderList : IUniqueList<SolutionFolder, SolutionFolderListAssociation>
     {
         public SolutionFolderList() { }
-        public SolutionFolderList(List<SolutionFolderListAssociation> associations, AsciiStringReference listIdentifier = null)
+        public SolutionFolderList(in List<SolutionFolderListAssociation> associations, in AsciiStringReference listIdentifier = default)
         {
             SolutionFolderListAssociations = associations;
             ListIdentifier = listIdentifier;
         }
-        public SolutionFolderList(SolutionFolderListAssociation associations, AsciiStringReference listIdentifier = null)
-            : this(new List<SolutionFolderListAssociation> { associations }, listIdentifier)
+        public SolutionFolderList(in SolutionFolderListAssociation associations, in AsciiStringReference listIdentifier = default)
+            : this(new List<SolutionFolderListAssociation> { associations }, in listIdentifier)
         {
         }
-        public SolutionFolderList(SolutionFolder solutionFolder, AsciiStringReference listIdentifier = null)
-            : this(new SolutionFolderListAssociation(solutionFolder), listIdentifier)
+        public SolutionFolderList(in SolutionFolder solutionFolder, in AsciiStringReference listIdentifier = default)
+            : this(new SolutionFolderListAssociation(solutionFolder), in listIdentifier)
         {
         }
-        public SolutionFolderList(Guid guid, AsciiStringReference name, SolutionProjectList projectList = null, AsciiStringReference listIdentifier = null)
-            : this(new SolutionFolder(guid, name, projectList), listIdentifier)
+        public SolutionFolderList(in Guid guid, in AsciiStringReference name, in SolutionProjectList projectList = default, in AsciiStringReference listIdentifier = default)
+            : this(new SolutionFolder(in guid, in name, in projectList), in listIdentifier)
         {
         }
-        public SolutionFolderList(Guid guid, string name, SolutionProjectList projectList = null, AsciiStringReference listIdentifier = null)
-            : this(new SolutionFolder(guid, name, projectList), listIdentifier)
+        public SolutionFolderList(in Guid guid, in string name, in SolutionProjectList projectList = default, in AsciiStringReference listIdentifier = default)
+            : this(new SolutionFolder(in guid, in name, in projectList), in listIdentifier)
         {
         }
 
@@ -50,11 +50,11 @@ namespace DevOps.Primitives.VisualStudio.Solutions
 
         public List<SolutionFolderListAssociation> GetAssociations() => SolutionFolderListAssociations;
 
-        public void SetRecords(List<SolutionFolder> records)
+        public void SetRecords(in List<SolutionFolder> records)
         {
-            SolutionFolderListAssociations = UniqueListAssociationsFactory<SolutionFolder, SolutionFolderListAssociation>.Create(records);
+            SolutionFolderListAssociations = UniqueListAssociationsFactory<SolutionFolder, SolutionFolderListAssociation>.Create(in records);
             ListIdentifier = new AsciiStringReference(
-                UniqueListIdentifierFactory<SolutionFolder>.Create(records, r => r.SolutionFolderId));
+                UniqueListIdentifierFactory<SolutionFolder>.Create(in records, r => r.SolutionFolderId));
         }
     }
 }

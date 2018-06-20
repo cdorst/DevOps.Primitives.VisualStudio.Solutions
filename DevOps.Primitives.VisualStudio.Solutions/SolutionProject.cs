@@ -4,7 +4,8 @@ using ProtoBuf;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
+using static System.IO.Path;
+using static System.String;
 
 namespace DevOps.Primitives.VisualStudio.Solutions
 {
@@ -13,14 +14,14 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     public class SolutionProject : IUniqueListRecord
     {
         public SolutionProject() { }
-        public SolutionProject(Guid guid, AsciiStringReference name, AsciiStringReference pathRelativeToSolution)
+        public SolutionProject(in Guid guid, in AsciiStringReference name, in AsciiStringReference pathRelativeToSolution)
         {
             Guid = guid;
             Name = name;
             PathRelativeToSolution = pathRelativeToSolution;
         }
-        public SolutionProject(Guid guid, string name, string pathRelativeToSolution)
-            : this(guid, new AsciiStringReference(name), new AsciiStringReference(pathRelativeToSolution))
+        public SolutionProject(in Guid guid, in string name, in string pathRelativeToSolution)
+            : this(in guid, new AsciiStringReference(in name), new AsciiStringReference(in pathRelativeToSolution))
         {
         }
 
@@ -50,13 +51,13 @@ namespace DevOps.Primitives.VisualStudio.Solutions
                 path: GetSlnProjectDeclarationPath(),
                 guid: Guid);
 
-        public string GetCsprojFileName() => $"{Name.Value}.csproj";
+        public string GetCsprojFileName() => Concat(Name.Value, ".csproj");
 
         private string GetSlnProjectDeclarationPath()
         {
             var path = PathRelativeToSolution.Value;
             var fileName = GetCsprojFileName();
-            if (!path.EndsWith(fileName)) path = Path.Combine(path, fileName);
+            if (!path.EndsWith(fileName)) path = Combine(path, fileName);
             return path;
         }
     }

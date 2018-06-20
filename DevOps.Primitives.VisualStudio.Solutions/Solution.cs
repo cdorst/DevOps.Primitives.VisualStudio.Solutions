@@ -14,26 +14,22 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     public class Solution
     {
         public Solution() { }
-        public Solution(Guid guid, AsciiStringReference name, AsciiMaxStringReference versionBlock, SolutionFolderList solutionFolderList = null)
+        public Solution(in Guid guid, in AsciiStringReference name, in AsciiMaxStringReference versionBlock, in SolutionFolderList solutionFolderList = default)
         {
             Guid = guid;
             Name = name;
-            VersionBlock = versionBlock;
             SolutionFolderList = solutionFolderList;
-        }
-        public Solution(Guid guid, string name, string versionBlock, SolutionFolderList solutionFolderList = null)
-            : this(guid, new AsciiStringReference(name), new AsciiMaxStringReference(versionBlock), solutionFolderList)
-        {
-        }
-        public Solution(Guid guid, AsciiStringReference name, AsciiMaxStringReference versionBlock, SolutionProject solutionProject = null)
-        {
-            Guid = guid;
-            Name = name;
             VersionBlock = versionBlock;
-            SolutionProject = solutionProject;
         }
-        public Solution(Guid guid, string name, string versionBlock, SolutionProject solutionProject = null)
-            : this(guid, new AsciiStringReference(name), new AsciiMaxStringReference(versionBlock), solutionProject)
+        public Solution(in Guid guid, in string name, in string versionBlock, in SolutionFolderList solutionFolderList = default)
+            : this(in guid, new AsciiStringReference(in name), new AsciiMaxStringReference(in versionBlock), in solutionFolderList)
+        {
+        }
+        public Solution(in Guid guid, in AsciiStringReference name, in AsciiMaxStringReference versionBlock, in SolutionProject solutionProject)
+            : this(in guid, in name, in versionBlock)
+            => SolutionProject = solutionProject;
+        public Solution(in Guid guid, in string name, in string versionBlock, in SolutionProject solutionProject = default)
+            : this(in guid, new AsciiStringReference(in name), new AsciiMaxStringReference(in versionBlock), in solutionProject)
         {
         }
 
@@ -112,12 +108,12 @@ namespace DevOps.Primitives.VisualStudio.Solutions
         public override string ToString()
             => GetSolutionBuilder().ToString();
 
-        private static string GetNestingAssignment(SolutionFolder folder, SolutionProject project)
+        private static string GetNestingAssignment(in SolutionFolder folder, in SolutionProject project)
             => SlnDeclarations.GetNestedProjectAssignment(
                 folder.Guid,
                 project.Guid);
 
-        private static string GetSolutionGuidLine(Guid guid)
-            => SlnDeclarations.GetSolutionGuidLine(guid);
+        private static string GetSolutionGuidLine(in Guid guid)
+            => SlnDeclarations.GetSolutionGuidLine(in guid);
     }
 }

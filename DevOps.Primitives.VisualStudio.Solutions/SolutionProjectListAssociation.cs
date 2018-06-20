@@ -12,17 +12,17 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     public class SolutionProjectListAssociation : IUniqueListAssociation<SolutionProject>
     {
         public SolutionProjectListAssociation() { }
-        public SolutionProjectListAssociation(SolutionProject solutionProject, SolutionProjectList solutionProjectList = null)
+        public SolutionProjectListAssociation(in SolutionProject solutionProject, in SolutionProjectList solutionProjectList = default)
         {
             SolutionProject = solutionProject;
             SolutionProjectList = solutionProjectList;
         }
-        public SolutionProjectListAssociation(Guid guid, AsciiStringReference name, AsciiStringReference pathRelativeToSolution, SolutionProjectList solutionProjectList = null)
-            : this(new SolutionProject(guid, name, pathRelativeToSolution), solutionProjectList)
+        public SolutionProjectListAssociation(in Guid guid, in AsciiStringReference name, in AsciiStringReference pathRelativeToSolution, in SolutionProjectList solutionProjectList = default)
+            : this(new SolutionProject(in guid, in name, in pathRelativeToSolution), in solutionProjectList)
         {
         }
-        public SolutionProjectListAssociation(Guid guid, string name, string pathRelativeToSolution, SolutionProjectList solutionProjectList = null)
-            : this(new SolutionProject(guid, name, pathRelativeToSolution), solutionProjectList)
+        public SolutionProjectListAssociation(in Guid guid, in string name, in string pathRelativeToSolution, in SolutionProjectList solutionProjectList = default)
+            : this(new SolutionProject(in guid, in name, in pathRelativeToSolution), in solutionProjectList)
         {
         }
 
@@ -42,10 +42,10 @@ namespace DevOps.Primitives.VisualStudio.Solutions
 
         public SolutionProject GetRecord() => SolutionProject;
 
-        public void SetRecord(SolutionProject record)
+        public void SetRecord(in SolutionProject record)
         {
             SolutionProject = record;
-            SolutionProjectId = SolutionProject.SolutionProjectId;
+            SolutionProjectId = record.SolutionProjectId;
         }
     }
 }

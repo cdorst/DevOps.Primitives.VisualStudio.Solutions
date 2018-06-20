@@ -14,14 +14,14 @@ namespace DevOps.Primitives.VisualStudio.Solutions
     public class SolutionFolder : IUniqueListRecord
     {
         public SolutionFolder() { }
-        public SolutionFolder(Guid guid, AsciiStringReference name, SolutionProjectList projectList = null)
+        public SolutionFolder(in Guid guid, in AsciiStringReference name, in SolutionProjectList projectList = default)
         {
             Guid = guid;
             Name = name;
             SolutionProjectList = projectList;
         }
-        public SolutionFolder(Guid guid, string name, SolutionProjectList projectList = null)
-            : this(guid, new AsciiStringReference(name), projectList)
+        public SolutionFolder(in Guid guid, in string name, in SolutionProjectList projectList = default)
+            : this(in guid, new AsciiStringReference(in name), in projectList)
         {
         }
 
